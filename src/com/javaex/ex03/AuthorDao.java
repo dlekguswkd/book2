@@ -250,7 +250,7 @@ public class AuthorDao {
 	// =================================================================
 	
 	// 작가 조회1개
-	public List<AuthorVo> selectAuthor(int authorId) {
+	public List<AuthorVo> selectAuthorList(int authorId) {
 		
 		System.out.println(authorId);
 		System.out.println("작가 조회");
