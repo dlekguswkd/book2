@@ -1,4 +1,4 @@
-package com.javaex.ex02;
+package com.javaex.ex04;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ public class BookApp {
 		//bookDao.deleteBook(8);
 		
 		//조회1
-		BookVo bookVo = bookDao.selectBook(7); 
-		System.out.println(bookVo); 
+		//BookVo bookVo = bookDao.selectBook(7); 
+		//System.out.println(bookVo); 
 
 		//조회전체
 		//List<BookVo> bookList = bookDao.selectBookAll(); // new 리스트 만들어서 주소만 전달한다

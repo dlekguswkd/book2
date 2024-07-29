@@ -1,4 +1,4 @@
-package com.javaex.ex02;
+package com.javaex.ex04;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,12 +11,55 @@ import java.util.List;
 public class BookDao {
 
 	//필드
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+
+	private String driver = "com.mysql.cj.jdbc.Driver";
+	private String url = "jdbc:mysql://localhost:3306/book_db";
+	private String id = "book";
+	private String pw = "book";
 	
 	//생성자
 	
 	//메소드 gs
 	
 	//메소드 일반
+	
+	private void getConnection() {	// private으로 해서 딴데서 안쓰게 막아둠
+		// DB연결메소드
+		try {
+			
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName(driver);	
+
+			// 2. Connection 얻어오기
+			conn = DriverManager.getConnection(url, id, pw);
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+	}
+	
+	private void close() {
+		// 5. 자원정리
+		try {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+	}
 	
 	//책 등록
 	public int insertBook(String title, String pubs, String pubDate, int authorId) {
@@ -29,19 +72,9 @@ public class BookDao {
 		
 		int count = -1; 	
 		
-		// 0. import java.sql.*;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
+		this.getConnection();
+		
 		try {
-
-			// 1. JDBC 드라이버 (Oracle) 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");	
-
-			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/book_db";
-			conn = DriverManager.getConnection(url, "book", "book");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			//sql문 준비				
@@ -61,29 +94,10 @@ public class BookDao {
 			System.out.println(count + "건 등록되었습니다.");
 		
 
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
-		} catch (SQLException e) {
+		}  catch (SQLException e) {
 			System.out.println("error:" + e);
-		} finally {
-
-			// 5. 자원정리
-
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-
-		}
+		} 
+		this.close();
 		
 		return count;
 	} // 책 등록 끝
@@ -102,19 +116,9 @@ public class BookDao {
 		
 		int count = -1; 
 		
-		// 0. import java.sql.*;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		getConnection();
 
 		try {
-
-			// 1. JDBC 드라이버 (Oracle) 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");	
-
-			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/book_db";
-			conn = DriverManager.getConnection(url, "book", "book");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			//sql문 준비
@@ -141,29 +145,10 @@ public class BookDao {
 			System.out.println(count + "건 수정되었습니다.");
 		
 
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
-		} finally {
-
-			// 5. 자원정리
-
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-
-		}
+		} 
+		this.close();
 		
 		return count;
 		
@@ -180,17 +165,9 @@ public class BookDao {
 		
 		int count = -1; 
 		
-		// 0. import java.sql.*;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		this.getConnection();
+		
 		try {
-			// 1. JDBC 드라이버 (Oracle) 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/book_db";
-			conn = DriverManager.getConnection(url, "book", "book");
 			
 			// 3. SQL문 준비 / 바인딩 / 실행
 			// sql문 준비
@@ -209,27 +186,10 @@ public class BookDao {
 			System.out.println(count + "건 삭제되었습니다.");
 			
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
-		} catch (SQLException e) {
+		}catch (SQLException e) {
 			System.out.println("error:" + e);
-		} finally {
-			// 5. 자원정리
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
-		
+		} 
+		this.close();
 		return count;
 		
 	} //책 삭제 끝
@@ -245,19 +205,9 @@ public class BookDao {
 		
 		int count = -1;
 		
-		// 0. import java.sql.*;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		this.getConnection();
 
 		try {
-
-			// 1. JDBC 드라이버 (Oracle) 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");	
-
-			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/book_db";
-			conn = DriverManager.getConnection(url, "book", "book");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			//sql문 준비
@@ -298,29 +248,10 @@ public class BookDao {
 			System.out.println( (count+2) + "건 조회 되었습니다.");
 
 
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
-		} catch (SQLException e) {
+		}  catch (SQLException e) {
 			System.out.println("error:" + e);
-		} finally {
-
-			// 5. 자원정리
-
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-
 		}
+		this.close();
 		
 		return bookVo;
 		
@@ -334,19 +265,9 @@ public class BookDao {
 		System.out.println("책 전체 리스트");
 		
 		List<BookVo> bookList = new ArrayList<BookVo>();
-		
-		// 0. import java.sql.*;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		this.getConnection();
 		
 		try {
-			// 1. JDBC 드라이버 (Oracle) 로딩
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			// 2. Connection 얻어오기
-			String url = "jdbc:mysql://localhost:3306/book_db";
-			conn = DriverManager.getConnection(url, "book", "book");
 			
 			// 3. SQL문 준비 / 바인딩 / 실행
 			// sql문 준비
@@ -385,27 +306,10 @@ public class BookDao {
 			}
 			
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("error: 드라이버 로딩 실패 - " + e);
-		} catch (SQLException e) {
+		}  catch (SQLException e) {
 			System.out.println("error:" + e);
-		} finally {
-			// 5. 자원정리
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
-		
+		} 
+		this.close();
 		return bookList;  
 		
 	} // 책 전체 리스트 끝

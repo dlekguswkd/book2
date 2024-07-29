@@ -46,7 +46,7 @@ public class AuthorDao {
 	}
 	
 	// 똑같은 행동을 하는 (5번에서)
-	private void close () {
+	private void close() {
 		// 5. 자원정리
 		try {
 			if (rs != null) {
