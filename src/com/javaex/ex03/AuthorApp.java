@@ -12,6 +12,10 @@ public class AuthorApp {
 		
 		//등록
 		//int count = authorDao.insertAuthor("다현", "수강생");
+		/*묶어서 등록(여러개를 한꺼번에 등록할떄)
+		 AuthorVo vo = new AuthorVo("다현", "수강생");
+		 int count2 = authorDao.insertAuthor2(vo);
+		 */
 		
 		//삭제
 		//authorDao.deleteAuthor(10);

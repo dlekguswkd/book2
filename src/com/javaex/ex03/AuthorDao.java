@@ -66,7 +66,7 @@ public class AuthorDao {
 	
 	//작가 등록
 	public int insertAuthor(String name, String desc) {
-		
+	// 			insertAuthor2(AuthorVo authorVo) {	-- 여러개를 한꺼번에 묶어서 등록할떄				
 		System.out.println(name);
 		System.out.println(desc);
 		System.out.println("저장 로직");
@@ -88,8 +88,8 @@ public class AuthorDao {
 		
 			// 바인딩 (말랑말랑하게 해주기)
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, name);		
-			pstmt.setString(2, desc);
+			pstmt.setString(1, name);	// name -> authorVo.getAuthorName()	-- 여러개를 한꺼번에 묶어서 등록할떄
+			pstmt.setString(2, desc);	// desc -> authorVo.getAuthorDesc() -- 여러개를 한꺼번에 묶어서 등록할떄
 
 			// 실행
 			count = pstmt.executeUpdate();
